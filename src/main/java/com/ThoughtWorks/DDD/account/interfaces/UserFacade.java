@@ -1,5 +1,6 @@
 package com.ThoughtWorks.DDD.account.interfaces;
 
+import com.ThoughtWorks.DDD.account.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
