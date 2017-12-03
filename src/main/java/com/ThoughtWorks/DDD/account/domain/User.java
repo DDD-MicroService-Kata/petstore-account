@@ -14,6 +14,9 @@ public class User implements com.ThoughtWorks.DDD.account.domain.Entity<Long> {
     private String lastName;
     private Contacts contacts;
 
+    public User() {
+    }
+
     public User(final String firstName, final String lastName, Contacts contacts) {
         this.firstName = firstName;
         this.lastName = lastName;

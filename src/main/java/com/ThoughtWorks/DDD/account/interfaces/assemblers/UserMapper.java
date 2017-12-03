@@ -4,7 +4,7 @@ import com.ThoughtWorks.DDD.account.domain.User;
 import com.ThoughtWorks.DDD.account.interfaces.UserDTO;
 
 public class UserMapper {
-    public static UserDTO toUserDTO(User user) {
+    public static UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .withFirstName(user.getFirstName())
                 .withLastName(user.getLastName())

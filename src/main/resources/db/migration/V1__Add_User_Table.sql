@@ -3,5 +3,5 @@ CREATE TABLE `user` (
   `first_name`         VARCHAR(20)  NOT NULL,
   `last_name`             VARCHAR(100)       NOT NULL,
   `phone_number`       VARCHAR(11),
-  `email_address`     VARCHAR(20)
+  `email_address`     VARCHAR(30)
 );

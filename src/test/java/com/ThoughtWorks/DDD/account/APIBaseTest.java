@@ -1,9 +1,7 @@
 package com.ThoughtWorks.DDD.account;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,14 +22,11 @@ import java.io.IOException;
 @ActiveProfiles(profiles = "test")
 @Transactional
 @AutoConfigureMockMvc
-public class APIBaseTest {
+public abstract class APIBaseTest {
     @Autowired
     private WebApplicationContext wac;
 
     protected MockMvc mockMvc;
-
-    @Autowired
-    protected ObjectMapper objectMapper;
 
     @Before
     public void baseBefore() {
@@ -48,9 +43,5 @@ public class APIBaseTest {
         } catch (IOException e) {
             throw new RuntimeException(String.format("Failed to read json file in %s.", filePath));
         }
-    }
-
-    @Test
-    public void placeHolder() {
     }
 }
