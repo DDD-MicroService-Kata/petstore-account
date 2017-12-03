@@ -1,5 +1,7 @@
 package com.ThoughtWorks.DDD.account.domain;
 
-public interface ValueObject<T> {
+import java.io.Serializable;
+
+public interface ValueObject<T> extends Serializable {
     boolean sameValueAs(T other);
 }
