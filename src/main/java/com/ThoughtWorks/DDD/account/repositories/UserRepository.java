@@ -1,4 +1,4 @@
-package com.ThoughtWorks.DDD.account.interfaces;
+package com.ThoughtWorks.DDD.account.repositories;
 
 import com.ThoughtWorks.DDD.account.domain.User;
 import org.springframework.data.repository.CrudRepository;

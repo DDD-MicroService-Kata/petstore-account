@@ -1,10 +1,16 @@
 package com.ThoughtWorks.DDD.account.domain;
 
+import javax.persistence.Embeddable;
+
 import static java.util.Objects.nonNull;
 
+@Embeddable
 public class Contacts implements ValueObject<Contacts> {
-    private final String phoneNumber;
-    private final String emailAddress;
+    private String phoneNumber;
+    private String emailAddress;
+
+    public Contacts() {
+    }
 
     public Contacts(String phoneNumber, String emailAddress) {
         this.phoneNumber = phoneNumber;

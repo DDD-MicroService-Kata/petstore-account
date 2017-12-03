@@ -1,0 +1,11 @@
+{
+  "data": {
+    "type": "",
+    "attributes": {
+      "firstName": "Anne",
+      "lastName": "Queen",
+      "emailAddress": "james@gmail.com",
+      "phoneNumber": "13200001111"
+    }
+  }
+}

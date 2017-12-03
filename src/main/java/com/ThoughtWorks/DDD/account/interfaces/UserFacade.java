@@ -1,20 +1,17 @@
 package com.ThoughtWorks.DDD.account.interfaces;
 
+import com.ThoughtWorks.DDD.account.domain.Contacts;
 import com.ThoughtWorks.DDD.account.domain.User;
+import com.ThoughtWorks.DDD.account.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+
+import static com.ThoughtWorks.DDD.account.interfaces.assemblers.UserMapper.toUserDTO;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,16 +33,22 @@ public class UserFacade {
     }
 
     @PostMapping
-    public final ResponseEntity createUser(@RequestBody final User user){
+    public final ResponseEntity createUser(@RequestBody final ApiForRequest<UserDTO> req){
+        UserDTO attributes = req.getAttributes();
+        Contacts contacts = new Contacts(attributes.getPhoneNumber(), attributes.getEmailAddress());
+        User user = new User(attributes.getFirstName(), attributes.getLastName(), contacts);
+
         User userAfterSaved = userRepository.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(String.format("/api/users/%d", userAfterSaved.getId())));
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public final @ResponseBody User findById(@PathVariable("id") final long id) {
-        return userRepository.findOne(id);
+    public final @ResponseBody
+    ApiForResponse<UserDTO> findById(@PathVariable("id") final long id) {
+        User user = userRepository.findOne(id);
+        return new ApiForResponse<>(user.getId(), toUserDTO(user));
     }
 
     @GetMapping(value = "/sample")

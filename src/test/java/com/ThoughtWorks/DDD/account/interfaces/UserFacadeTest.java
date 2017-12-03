@@ -8,9 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder.okForJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -31,20 +28,26 @@ public class UserFacadeTest extends APIBaseTest {
 
     @Test
     public final void shouldGetTheCustomerAfterJustCreated() throws Exception {
-        Map<String, String> newCustomer = new HashMap<>();
-        newCustomer.put("firstName", "Anne");
-        newCustomer.put("lastName", "Queen");
-
         MvcResult mvcResult = this.mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(newCustomer)))
+                .content(withJson("user.json")))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         String location = mvcResult.getResponse().getHeader("location");
         this.mockMvc.perform(MockMvcRequestBuilders.get(location).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{'id':1, 'firstName':'Anne', 'lastName':'Queen'}"));
+                .andExpect(content().json("{" +
+                        "    'data': {" +
+                        "        'id': 1," +
+                        "        'attributes': {" +
+                        "            'firstName': 'Anne'," +
+                        "            'lastName': 'Queen'," +
+                        "            'emailAddress': 'james@gmail.com'," +
+                        "            'phoneNumber': '13200001111'" +
+                        "        }" +
+                        "    }" +
+                        "}"));
     }
 
     @Test
