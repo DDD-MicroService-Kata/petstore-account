@@ -12,6 +12,8 @@ import static com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder.o
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,10 +55,10 @@ public class UserFacadeTest extends APIBaseTest {
 
     @Test
     public final void shouldGetTheStringByApiCall() throws Exception {
-        stubFor(WireMock.get(urlEqualTo("9116"))
-                .willReturn(okForJson("demo")));
+        stubFor(get(urlEqualTo("/api/users"))
+                .willReturn(ok("demo")));
 
-        this.mockMvc.perform(get("/api/users").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/users/sample").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("demo"));
     }
