@@ -1,18 +1,15 @@
 package com.ThoughtWorks.DDD.account.interfaces;
 
 import com.ThoughtWorks.DDD.account.APIBaseTest;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder.okForJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,7 +20,7 @@ public class UserFacadeTest extends APIBaseTest {
 
     @Test
     public void should_create_bookings_without_authorization() throws Exception {
-        this.mockMvc.perform(get("/api/users")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -38,7 +35,7 @@ public class UserFacadeTest extends APIBaseTest {
                 .andReturn();
 
         String location = mvcResult.getResponse().getHeader("location");
-        this.mockMvc.perform(get(location)
+        this.mockMvc.perform(MockMvcRequestBuilders.get(location)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
@@ -65,7 +62,7 @@ public class UserFacadeTest extends APIBaseTest {
 
     @Test
     public void should_change_customer_contacts_after_created() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(post("/api/users")
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(withJson("user.json")))
                 .andExpect(status().isCreated())
@@ -77,7 +74,7 @@ public class UserFacadeTest extends APIBaseTest {
                 .content(withJson("modified-contacts.json")))
                 .andExpect(status().isNoContent());
 
-        this.mockMvc.perform(get(location)
+        this.mockMvc.perform(MockMvcRequestBuilders.get(location)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
